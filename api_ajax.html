@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+    <style>
+    	h1 {
+    		text-align: center;
+			font-family: Oswald Sans-Serif;
+			color: #333366 !important;
+    	}
+    	#table-row {
+    		margin-top: 15px;
+    	}
+
+    </style>
+</head>
+	<body>
+		<header class = "row jumbotron" >
+				<div class = "col-md-3">
+					<img src = "http://www.aim4solutions.com/media/techlogos/PHP-logo.png" width = "300" height = "200" >
+				</div>
+				<h1 class = "col-md-6">Get Info on PHP Events & other Conferences!</h1>
+				<div class = "col-md-3">
+					<img src = "http://www.adafruit.com/adablog/wp-content/uploads/2012/01/php.jpg" width = "300" height = "200">
+				</div>
+		</header>
+		<div class = 'row' id = "control">
+			<div class = "col-md-5"></div>
+			<div class = "col-md-2">
+				<button type="button" id="get_info_btn"class="btn btn-primary btn-lg">Upcoming Events</button>
+			</div>
+			<div class = "col-md-5"></div>
+		</div>
+		<div class = 'row' id = 'table-row'>
+			<div class = "col-md-1"></div>
+			<div class = "col-md-10" id='display'>
+			<table class="table table-bordered table table-striped">
+		   		<thead>
+		   			<tr>
+			   			<th>Name</th>
+			   			<th>Friendly URL Name</th>
+			   			<th>Start Date</th>
+			   			<th>End Date</th>
+			   			<th>Description</th>
+					</tr>
+					
+		   		</thead>
+		   		<tbody>
+
+
+		   		</tbody>
+		   		<tfoot>
+
+		   		</tfoot>
+			</table>
+			</div>
+			<div class = "col-md-1"></div>
+		</div>
+		<script  src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script>
+			$(document).ready(function () {
+				$('#get_info_btn').click(function() {
+					$.ajax({
+						url: 'http://api.joind.in/v2.1/events?filter=upcoming',
+						data: {format: 'json'},
+						type: 'GET',
+						dataType: 'jsonp',
+						error: function() {
+							$('#display').html('<h2>Sorry, there was an error in retrieving the information.</h2>');
+						},
+						success: function(data) {
+							for (var i = 0; i < 5; i ++) {
+								var tr = $('<tr>');
+								var name = $('<td>').html(data.events[i].name);
+								var url_friend = $('<td>').html(data.events[i].url_friendly_name);
+								var start_date = $('<td>').html(data.events[i].start_date);
+								var end_date = $('<td>').html(data.events[i].end_date);
+								var description = $('<td>').html(data.events[i].description);
+								tr.append(name).append(url_friend).append(start_date).append(end_date).append(description);
+
+								$('tbody').append(tr);
+							}
+						}
+
+					});
+				});
+
+			
+			});
+
+
+		</script>
+
+    </body>
+</html>
